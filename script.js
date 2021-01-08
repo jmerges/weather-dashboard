@@ -9,11 +9,18 @@
 //         $("#temperature").text("Temperature: "+response.main.temp);
 // });
 
-function search(event) {
+function search(event, city = $("#searchText").val()) {
     event.preventDefault();
-    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + $("#searchText").val() + "&units=imperial&appid=b76d3a5bbf0536a4b6731b8694802bb2";
+    var storageList = [];
+    if (localStorage.getItem("cityList")) {
+        storageList = JSON.parse(localStorage.getItem("cityList"));
+    }
+    storageList.push(city);
+    console.log(storageList);
+    localStorage.setItem("cityList", JSON.stringify(storageList));
+    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=b76d3a5bbf0536a4b6731b8694802bb2";
     var uvURL = "";
-    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + $("#searchText").val() + "&units=imperial&appid=b76d3a5bbf0536a4b6731b8694802bb2";
+    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=b76d3a5bbf0536a4b6731b8694802bb2";
     console.log(weatherURL);
     // First ajax call for today's weather and UVI
     $.ajax({
@@ -56,5 +63,30 @@ function search(event) {
     });
 
 }
+
+function renderCities () {
+    var storageList = [];
+    if (localStorage.getItem("cityList")) {
+        storageList = JSON.parse(localStorage.getItem("cityList"));
+    }
+    console.log("hello");
+    for (var i=0; i<storageList.length; i++) {
+        var cityEl = $("<div class='tile is-vertical-8 box'>");
+        cityEl.text(storageList[i]);
+        $("form").append(cityEl);
+        cityEl.on("click", function(event) {
+            event.preventDefault();
+            console.log("hello");
+            console.log(i);
+            console.log(storageList[0]);
+            console.log(event.target.textContent);
+            $("#searchText").attr('value', event.target.textContent);
+            console.log($("#searchText").val());
+            search(event);
+        });
+    }
+}
+
+renderCities();
 
 $("#searchButton").on("click", search);
