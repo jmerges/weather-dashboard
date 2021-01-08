@@ -22,7 +22,8 @@ function search(event) {
       })
         .then(function(response) {
             console.log("hi");
-            $("#cityName").text(response.name+" "+moment().format("MM/DD/YY"));
+            $("#cityName").html(response.name+" "+moment().format("MM/DD/YY")+"<img id='i' />");
+            $("#i").attr("src", "http://openweathermap.org/img/wn/"+response.weather[0].icon+".png");
             $("#temperature").text("Temperature: "+response.main.temp+" °F");
             $("#humidity").text("Humidity: "+response.main.humidity+"%");
             $("#windSpeed").text("Wind Speed: "+response.wind.speed+" MPH");
@@ -45,9 +46,11 @@ function search(event) {
       })
         .then(function(response) {
             for (var i=0; i<5; i++) {
-                $("#date"+(i+1)).text(moment(response.list[3+(i*8)].dt_txt).format("MM/DD/YY"));
-                $("#temperature"+(i+1)).text("temp: "+response.list[3+(i*8)].main.temp+" °F");
-                $("#humidity"+(i+1)).text("humidity: "+response.list[3+(i*8)].main.humidity+"%");
+                $("#date"+(i+1)).text(moment(response.list[6+(i*8)].dt_txt).format("MM/DD/YY")); // I used 7 + (i*8) to get the correct offset in the response, since there are 8 timeslots in a day
+                $("#i"+(i+1)).attr("src", "http://openweathermap.org/img/wn/"+response.list[6+(i*8)].weather[0].icon+".png");
+                $("#temperature"+(i+1)).text("temp: "+response.list[6+(i*8)].main.temp+" °F");
+                $("#humidity"+(i+1)).text("humidity: "+response.list[6+(i*8)].main.humidity+"%");
+                console.log(response.list[7+(i*8)].dt_txt);
             }
 
     });
