@@ -15,7 +15,14 @@ function search(event, city = $("#searchText").val()) {
     if (localStorage.getItem("cityList")) {
         storageList = JSON.parse(localStorage.getItem("cityList"));
     }
-    storageList.push(city);
+    // Max length = 8
+    if (storageList.length > 7) {
+        storageList.shift();
+        localStorage.setItem("cityList", storageList);
+    }
+    if (!storageList.includes(city)) {
+        storageList.push(city);
+    }
     console.log(storageList);
     localStorage.setItem("cityList", JSON.stringify(storageList));
     var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=b76d3a5bbf0536a4b6731b8694802bb2";
@@ -53,11 +60,11 @@ function search(event, city = $("#searchText").val()) {
       })
         .then(function(response) {
             for (var i=0; i<5; i++) {
-                $("#date"+(i+1)).text(moment(response.list[6+(i*8)].dt_txt).format("MM/DD/YY")); // I used 7 + (i*8) to get the correct offset in the response, since there are 8 timeslots in a day
-                $("#i"+(i+1)).attr("src", "http://openweathermap.org/img/wn/"+response.list[6+(i*8)].weather[0].icon+".png");
-                $("#temperature"+(i+1)).text("temp: "+response.list[6+(i*8)].main.temp+" °F");
-                $("#humidity"+(i+1)).text("humidity: "+response.list[6+(i*8)].main.humidity+"%");
-                console.log(response.list[7+(i*8)].dt_txt);
+                $("#date"+(i+1)).text(moment(response.list[(i*8)].dt_txt).format("MM/DD/YY")); // I used 7 + (i*8) to get the correct offset in the response, since there are 8 timeslots in a day
+                $("#i"+(i+1)).attr("src", "http://openweathermap.org/img/wn/"+response.list[(i*8)].weather[0].icon+".png");
+                $("#temperature"+(i+1)).text("temp: "+response.list[(i*8)].main.temp+" °F");
+                $("#humidity"+(i+1)).text("humidity: "+response.list[(i*8)].main.humidity+"%");
+                console.log(response.list[(i*8)].dt_txt);
             }
 
     });
@@ -65,6 +72,7 @@ function search(event, city = $("#searchText").val()) {
 }
 
 function renderCities () {
+    $("#cityList").html("");
     var storageList = [];
     if (localStorage.getItem("cityList")) {
         storageList = JSON.parse(localStorage.getItem("cityList"));
@@ -73,7 +81,7 @@ function renderCities () {
     for (var i=0; i<storageList.length; i++) {
         var cityEl = $("<div class='tile is-vertical-8 box'>");
         cityEl.text(storageList[i]);
-        $("form").append(cityEl);
+        $("#cityList").prepend(cityEl);
         cityEl.on("click", function(event) {
             event.preventDefault();
             console.log("hello");
@@ -82,11 +90,14 @@ function renderCities () {
             console.log(event.target.textContent);
             $("#searchText").attr('value', event.target.textContent);
             console.log($("#searchText").val());
-            search(event);
+            search(event, $("#searchText").attr("value"));
         });
     }
 }
 
 renderCities();
 
-$("#searchButton").on("click", search);
+$("#searchButton").on("click", function(event) {
+    search(event);
+    renderCities();
+});
