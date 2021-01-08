@@ -17,4 +17,4 @@ I was given an image to go off of, but other than that I built the application f
  is an online collection of CSS classes. 
 <br>
 ## Preview
-![](Preview.png)
+![](preview.png)
