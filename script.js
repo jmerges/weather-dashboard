@@ -80,6 +80,7 @@ function renderCities () {
     console.log("hello");
     for (var i=0; i<storageList.length; i++) {
         var cityEl = $("<div class='tile is-vertical-8 box'>");
+        cityEl.addClass("has-background-light")
         cityEl.text(storageList[i]);
         $("#cityList").prepend(cityEl);
         cityEl.on("click", function(event) {
