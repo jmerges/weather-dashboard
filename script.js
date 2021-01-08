@@ -20,6 +20,7 @@ function search(event) {
       })
         .then(function(response) {
             console.log("hi");
+            $("#cityName").text(response.name);
             $("#temperature").text("Temperature: "+response.main.temp+" degrees fahrenheit");
             $("#humidity").text("Humidity: "+response.main.humidity+"%");
             $("#windSpeed").text("Wind Speed: "+response.wind.speed+" MPH");
@@ -31,6 +32,7 @@ function search(event) {
               })
                 .then(function(response) {
                     console.log(response);
+                    $("#uvIndex").text("UV Index: "+response[0].value);
             });
     });
 

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
 </head>
 <body>
-    <div class="tile is-ancestor">
+    <div class="tile is-ancestor" id="container">
         <!-- search tile -->
         <div class="tile is-parent is-4" id="searchArea">
             <article class="tile is-child box">
@@ -24,19 +24,24 @@
         <div class="tile is-parent is-12" id="currentCity">
             <article class="tile is-child box">
                 <!-- city name and date -->
-                <p class="title">City Name</p><br>
+                <p class="title" id="cityName">City Name</p><br>
                 <p class="subtitle" id="temperature">test</p>
                 <p class="subtitle" id="humidity">test</p>
                 <p class="subtitle" id="windSpeed"></p>
                 <p class="subtitle" id="uvIndex"></p>
-            </article><br>
-            <article class="tile is-child box" id="forecast1"></article>
-            <article class="tile is-child box" id="forecast2"></article>
-            <article class="tile is-child box" id="forecast3"></article>
-            <article class="tile is-child box" id="forecast4"></article>
-            <article class="tile is-child box" id="forecast5"></article>
+                <br>
+                <p class="title" id="5dayTitle">5-Day Forecast:</p>
+                <div class="columns">
+                    <div class="column is-1" id="forecast1"><article class="tile is-child box has-background-link"></article></div>
+                    <div class="column is-1" id="forecast2"><article class="tile is-child box has-background-link"></article></div>
+                    <div class="column is-1" id="forecast3"><article class="tile is-child box has-background-link"></article></div>
+                    <div class="column is-1" id="forecast4"><article class="tile is-child box has-background-link"></article></div>
+                    <div class="column is-1" id="forecast5"><article class="tile is-child box has-background-link"></article></div>
+                </div>
+            </article>
         </div>
     </div>
+
     
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
